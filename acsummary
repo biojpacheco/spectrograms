@@ -1,0 +1,41 @@
+#acsummary
+#To obtain descriptive statistics for a set of parameters of different species
+
+library(tidyverse)
+
+#For data_01, select a matrix of species and parameters directly from clipboard
+
+data_01 <- read.delim("clipboard")
+
+#For data_02
+#Acoustic parameters for frequency: Initial, Final and Maximum Energy Frequency (FI, FF, FME), Bandwidth (BW)
+#Acoustic parameters for time: Pulse Duration and Interval (DP, IP)
+
+data_02 <- 
+  data_01 %>% 
+  group_by(Especie) %>% 
+  summarise(n=n(),
+            mean_FI=mean(FI),
+            sd_FI =sd(FI),
+            mean_FF=mean(FF),
+            sd_FF =sd(FF),
+            mean_FME=mean(FME),
+            sd_FME =sd(FME),
+            mean_BW=mean(BW),
+            sd_BW =sd(BW),
+            mean_DP=mean(DP),
+            sd_DP=sd(DP),
+            mean_IP=mean(IP),
+            sd_IP =sd(IP))
+
+#For data_03, obtain total of registers for each species (Sp1, Sp2, Sp3...)
+
+data_03 <- 
+  data_01 %>% 
+   summarise(Sp1=sum(Sp1),
+            Sp2=sum(Sp2),
+            Sp3=sum(Sp3))
+
+#Save .csv and then concatenate with Excel :P =CONCAT(DECIMAL(FI;2);" ± ";DECIMAL(FI;2))
+
+write.csv(data_02,'param.csv', row.names=TRUE)
