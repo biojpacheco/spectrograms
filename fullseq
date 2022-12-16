@@ -1,0 +1,29 @@
+#fullseq
+#Save spectrogram images of entire files automatically in working directory 
+
+install.packages('warbleR')
+library(warbleR)
+
+#First line
+#wl is for window lenght, for a quick assessment, suggested value for a is 256
+#ovlp is for overlap %, suggested value for b can be assigned as 75 or 90 (overlap %)
+#for wav.path assign a folder name ('YourFolder') where wav files are stored
+$flim is for minimun (minf) and maximum (maxf) frequencies display in kHz
+
+warbleR_options(wl = a, ovlp = b, wav.path = 'YourFolder', flim = c(minf, maxf))
+
+#Second line
+#Maintain ame values for wl and ovlp
+#sxrow is for seconds per row 
+#rows is for number of rows
+#collevels can be changed according to preferences
+#values in seq (l,m,n): l is for lower -dB, m is for max dB = 0, n is for number of steps between min dB to 0dB
+#Results will be saved as exported .jpg files
+
+full_spectrograms(wl= a, ovlp = b, sxrow = x, rows = y, collevels=seq(l, m, n), gr=F)
+
+
+#Example for bats for 60 seconds files (10 secs x 6 rows display)
+
+warbleR_options(wl = 256, ovlp = 75, wav.path = '2022-08-26', flim = c(0, 80))
+full_spectrograms(wl=256, ovlp =75, sxrow = 10, rows = 6, collevels=seq(-35, 0,5), gr=F)
