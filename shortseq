@@ -1,0 +1,56 @@
+# shortseq
+# How to elaborate short & representative aesthetic spectrograms for bats
+
+#Install and load packages
+
+install.packages('warbleR')
+install.packages('viridis')
+library(warbleR)
+library(viridis)
+
+#Select a representative WAV file for a determinate species (Sp1)
+#Choose a time interval in seconds from initial point a to final point b
+#I suggest to elaborate a 1 second-lenght spectrogram for echolocation call representation 
+#and another of 0.03 seconds-lenght spectrogram for a single pulse representation 
+
+Sp1 <- read_wave('Sp1.WAV', from = a, to = b)
+
+#ffilter: Assign filters from desired lowest and highest frequencies (lf and hf respectively) in hertz
+#flim: Minimum and Maximun frequency values show in spectrogram in kHz, suggested from 0 to 80 or 100 depending of species
+#Other data can be changed and tested for better display
+#First code in default color palette (White background and RGB colors)
+
+spectro(ffilter(Sp1, from = lf, to = hf, output = "Wave"),
+        flim = c(0, 80), scale = TRUE, grid = FALSE,
+        wl=512, ovlp= 75, osc=TRUE, collevels=seq(-25, 0, 1),
+        widths = c(10,1),
+        colbg = 'white', colaxis ='black', collab= 'black', colwave = 'black',
+        tlab = "Tiempo (s)",
+        flab = "Frecuencia (kHz)",
+        alab = " ",
+        scalelab = "Amplitud (dB)")
+
+#Second code in dark display (Black background and 'Inferno' palette colors)
+
+spectro(ffilter(Sp1, from = lf, to = hf, output = "Wave"),
+        flim = c(0, 80), scale = TRUE, grid = FALSE,
+        wl=512, ovlp= 75, osc=TRUE, collevels=seq(-25, 0, 1), pal=inferno,
+        widths = c(10,1),
+        colbg = 'black', colaxis ='white', collab= 'white', colwave = 'white',
+        tlab = "Tiempo (s)",
+        flab = "Frecuencia (kHz)",
+        alab = " ",
+        scalelab = "Amplitud (dB)") 
+
+#Example for a Promops davisoni 1 second lenght sequence
+
+Pd <- read_wave('Promopsdavisoni.WAV', from = 1.2, to = 2.2)
+spectro(ffilter(Pd, from = 25000, to = 35000, output = "Wave"),
+        flim = c(0, 80), scale = TRUE, grid = FALSE,
+        wl=512, ovlp= 75, osc=TRUE, collevels=seq(-25, 0, 1),
+        widths = c(10,1),
+        colbg = 'white', colaxis ='black', collab= 'black', colwave = 'black',
+        tlab = "Tiempo (s)",
+        flab = "Frecuencia (kHz)",
+        alab = " ",
+        scalelab = "Amplitud (dB)")
