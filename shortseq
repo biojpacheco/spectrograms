@@ -54,3 +54,8 @@ spectro(ffilter(Pd, from = 25000, to = 35000, output = "Wave"),
         flab = "Frecuencia (kHz)",
         alab = " ",
         scalelab = "Amplitud (dB)")
+
+#Export image > Save as image...
+#File name: calls: c1, c2, pulses: p1, p2 
+#Width: 1080, Height: 540
+#Save & Enjoy
