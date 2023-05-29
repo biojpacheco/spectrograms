@@ -1,0 +1,113 @@
+install.packages('devtools')
+install_github("vqv/ggbiplot")
+install.packages('ggthemes')
+
+library(ggbiplot)
+library(ggthemes)
+library(devtools)
+
+# Load the dataset where you have all the acoustic parameters by species & families
+murci <- read.csv("YOURDATA.csv")
+head(murci)
+str(murci)
+
+#Filters for different Families, cite the name of the column according to your data, in this example is quoted as ''Familia'') 
+emb <- 'Emballonuridae' 
+emb_murci <- filter(murci, Familia == emb)
+
+mol <- 'Molossidae' 
+mol_murci <- filter(murci, Familia == mol)
+
+ves <- 'Vespertilionidae' 
+ves_murci <- filter(murci, Familia == ves)
+
+# Select the numeric variables of the dataset
+#General
+murci_pca <- murci[, c('FI','FF','FME','BW','DP','IP')]
+head(murci_pca)
+str(murci_pca)
+
+#For each family
+emb_pca <- emb_murci[, c('FI','FF','FME','BW','DP','IP')]
+head(emb_pca)
+str(emb_pca)
+
+mol_pca <- mol_murci[, c('FI','FF','FME','BW','DP','IP')]
+head(mol_pca)
+str(mol_pca)
+
+ves_pca <- ves_murci[, c('FI','FF','FME','BW','DP','IP')]
+head(ves_pca)
+str(ves_pca)
+
+# Run PCA analysis
+#General
+pca <- prcomp(murci_pca, scale = T)
+pca
+
+#For each Family
+epca <- prcomp(emb_pca, scale = T)
+epca
+
+mpca <- prcomp(mol_pca, scale = T)
+mpca
+
+vpca <- prcomp(ves_pca, scale = T)
+vpca
+
+# Print the summary of the PCA analysis, general and by groups
+summary(pca)
+summary(epca)
+summary(mpca)
+summary (vpca)
+
+#Extract scores 1 y 2, general and by groups
+scores <- pca$x[, 1:2]
+escores <- epca$x[, 1:2]
+mscores <- mpca$x[, 1:2]
+vscores <- vpca$x[, 1:2]
+
+# Plot the results, Classify according to the column name for each Species, the example is quoted as ''Especie'' within the dataset
+#General
+plot(pca, type = "l")
+murci_class <- murci$Especie
+
+#Grouped by Family
+plot(epca, type = "l")
+emb_class <- emb_murci$Especie
+
+plot(mpca, type = "l")
+mol_class <- mol_murci$Especie
+
+plot(vpca, type = "l")
+ves_class <- ves_murci$Especie
+
+# Create a biplot of the first two components
+#General, legend at the top
+ggbiplot(pca, obs.scale = 1, var.scale = 1, groups = murci_class,
+         ellipse = TRUE, circle = F) +
+  geom_point(size = 3, aes(color = murci$Especie)) +
+  scale_color_discrete(name = '') + theme_bw() +
+  theme(legend.direction = "horizontal", legend.position = "top")
+
+#Grouped by family, legend at one side of the figure
+#Emballonuridae
+ggbiplot(epca, obs.scale = 1, var.scale = 1, groups = emb_class,
+         ellipse = TRUE, circle = F) +
+  geom_point(size = 3, aes(color = emb_murci$Especie)) +
+  scale_color_discrete(name = '') + theme_bw() +
+  theme(legend.direction = "vertical", legend.position = "right")
+
+#Molossidae (obs.scale modified to 0.5 as tested in this example, open to modify for a more convenient view)
+ggbiplot(mpca, obs.scale = 0.5, var.scale = 1, groups = mol_class,
+         ellipse = TRUE, circle = F) +
+  geom_point(size = 3, aes(color = mol_murci$Especie)) +
+  scale_color_discrete(name = '') + theme_bw() +
+  theme(legend.direction = "vertical", legend.position = "right")
+
+#Vespertilionidae
+ggbiplot(vpca, obs.scale = 1, var.scale = 1, groups = ves_class,
+         ellipse = TRUE, circle = F) +
+  geom_point(size = 3, aes(color = ves_murci$Especie)) +
+  scale_color_discrete(name = '') + theme_bw() +
+  theme(legend.direction = "vertical", legend.position = "right")
