@@ -36,6 +36,6 @@ data_03 <-
             Sp2=sum(Sp2),
             Sp3=sum(Sp3))
 
-#Save .csv and then concatenate with Excel :P =CONCAT(DECIMAL(FI;2);" ± ";DECIMAL(FI;2))
+#Save .csv and then concatenate with Excel :P =CONCAT(DECIMAL(X;2);" ± ";DECIMAL(SD;2)) o =CONCAT(DECIMAL(X,2)," ± ",DECIMAL(SD,2))
 
 write.csv(data_02,'param.csv', row.names=TRUE)
